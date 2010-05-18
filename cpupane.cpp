@@ -65,9 +65,13 @@ CpuPane::CpuPane(QWidget *parent) :
 
         ui->accHexLabel->setFont(QFont(Pep::labelFont));
         ui->accDecLabel->setFont(QFont(Pep::labelFont));
+        ui->accCh1Label->setFont(QFont(Pep::labelFont));
+        ui->accCh2Label->setFont(QFont(Pep::labelFont));
 
         ui->xHexLabel->setFont(QFont(Pep::labelFont));
         ui->xDecLabel->setFont(QFont(Pep::labelFont));
+        ui->xCh1Label->setFont(QFont(Pep::labelFont));
+        ui->xCh2Label->setFont(QFont(Pep::labelFont));
 
         ui->spHexLabel->setFont(QFont(Pep::labelFont));
         ui->spDecLabel->setFont(QFont(Pep::labelFont));
@@ -82,6 +86,8 @@ CpuPane::CpuPane(QWidget *parent) :
         ui->oprndSpecDecLabel->setFont(QFont(Pep::labelFont));
         ui->oprndHexLabel->setFont(QFont(Pep::labelFont));
         ui->oprndDecLabel->setFont(QFont(Pep::labelFont));
+        ui->oprndCh1Label->setFont(QFont(Pep::labelFont));
+        ui->oprndCh2Label->setFont(QFont(Pep::labelFont));
     }
     isCurrentlySimulating = false;
 }
@@ -89,6 +95,21 @@ CpuPane::CpuPane(QWidget *parent) :
 CpuPane::~CpuPane()
 {
     delete ui;
+}
+
+static const char *asciiNames[] = {"NUL", "SOH", "STX", "ETX", "EOT", "ENQ", "ACK", "BEL", "BS", "HT", "LF", "VT", "FF", "CR",
+	"SO", "SI", "DLE", "DC1", "DC2", "DC3", "DC4", "NAK", "SYN", "ETB", "CAN", "EM", "SUB", "ESC", "FS", "GS", "RS", "US", "SP"};
+
+static QString chLabel(int value) {
+	if (value <= ' ')
+		return QString(asciiNames[value]);
+	if (value == 127)
+		return QString("DEL");
+	QChar ch = QChar(value);
+	if (ch.isPrint())
+		return QString(ch);
+	else
+		return QString("???");
 }
 
 void CpuPane::updateCpu() {
@@ -101,9 +122,13 @@ void CpuPane::updateCpu() {
 
     ui->accHexLabel->setText(QString("0x") + QString("%1").arg(Sim::accumulator, 4, 16, QLatin1Char('0')).toUpper());
     ui->accDecLabel->setText(QString("%1").arg(Sim::toSignedDecimal(Sim::accumulator)));
+    ui->accCh1Label->setText(chLabel(Sim::accumulator/256));
+    ui->accCh2Label->setText(chLabel(Sim::accumulator%256));
 
     ui->xHexLabel->setText(QString("0x") + QString("%1").arg(Sim::indexRegister, 4, 16, QLatin1Char('0')).toUpper());
     ui->xDecLabel->setText(QString("%1").arg(Sim::toSignedDecimal(Sim::indexRegister)));
+    ui->xCh1Label->setText(chLabel(Sim::indexRegister/256));
+    ui->xCh2Label->setText(chLabel(Sim::indexRegister%256));
 
     ui->spHexLabel->setText(QString("0x") + QString("%1").arg(Sim::stackPointer, 4, 16, QLatin1Char('0')).toUpper());
     ui->spDecLabel->setText(QString("%1").arg(Sim::stackPointer));
@@ -120,12 +145,16 @@ void CpuPane::updateCpu() {
         ui->oprndSpecDecLabel->setText("");
         ui->oprndHexLabel->setText("");
         ui->oprndDecLabel->setText("");
+	ui->oprndCh1Label->setText("");
+	ui->oprndCh2Label->setText("");
     }
     else {
         ui->oprndSpecHexLabel->setText(QString("0x") + QString("%1").arg(Sim::operandSpecifier, 4, 16, QLatin1Char('0')).toUpper());
         ui->oprndSpecDecLabel->setText(QString("%1").arg(Sim::toSignedDecimal(Sim::operandSpecifier)));
         ui->oprndHexLabel->setText(QString("0x") + QString("%1").arg(Sim::operand, Sim::operandDisplayFieldWidth, 16, QLatin1Char('0')).toUpper());
         ui->oprndDecLabel->setText(QString("%1").arg(Sim::toSignedDecimal(Sim::operand)));
+	ui->oprndCh1Label->setText(chLabel(Sim::operand/256));
+	ui->oprndCh2Label->setText(chLabel(Sim::operand%256));
     }
 }
 
@@ -138,9 +167,13 @@ void CpuPane::clearCpu()
 
     ui->accHexLabel->setText("");
     ui->accDecLabel->setText("");
+    ui->accCh1Label->setText("");
+    ui->accCh2Label->setText("");
 
     ui->xHexLabel->setText("");
     ui->xDecLabel->setText("");
+    ui->xCh1Label->setText("");
+    ui->xCh2Label->setText("");
 
     ui->spHexLabel->setText("");
     ui->spDecLabel->setText("");
@@ -155,6 +188,8 @@ void CpuPane::clearCpu()
     ui->oprndSpecDecLabel->setText("");
     ui->oprndHexLabel->setText("");
     ui->oprndDecLabel->setText("");
+    ui->oprndCh1Label->setText("");
+    ui->oprndCh2Label->setText("");
 
     Sim::nBit = false;
     Sim::zBit = false;

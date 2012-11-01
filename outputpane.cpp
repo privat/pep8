@@ -41,7 +41,7 @@ OutputPane::~OutputPane()
 
 void OutputPane::appendOutput(QString str)
 {
-    ui->textEdit->setText(ui->textEdit->toPlainText().append(str));
+    ui->textEdit->setPlainText(ui->textEdit->toPlainText().append(str));
     ui->textEdit->verticalScrollBar()->setValue(ui->textEdit->verticalScrollBar()->maximum());
 }
 

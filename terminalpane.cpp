@@ -49,7 +49,7 @@ TerminalPane::~TerminalPane()
 
 void TerminalPane::appendOutput(QString str)
 {
-    ui->textEdit->setText(ui->textEdit->toPlainText().append(str));
+    ui->textEdit->setPlainText(ui->textEdit->toPlainText().append(str));
     strokeString.append(str);
     ui->textEdit->verticalScrollBar()->setValue(ui->textEdit->verticalScrollBar()->maximum()); // Scroll to bottom
 }

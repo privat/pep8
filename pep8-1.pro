@@ -6,6 +6,12 @@ TEMPLATE = app
 DEPENDPATH += .
 INCLUDEPATH += .
 QT += webkit
+QT += widgets
+QT += printsupport
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia  webkitwidgets
+
+
 
 # Mac icon/plist
 ICON = images/icon.icns

@@ -147,6 +147,7 @@ QString Pep::getSystem() {
     #ifdef Q_WS_WIN
     return QString("Windows");
     #endif
+    return NULL;
 }
 
 

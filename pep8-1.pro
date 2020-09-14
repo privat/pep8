@@ -5,7 +5,18 @@ TEMPLATE = app
 #TARGET = Pep8
 DEPENDPATH += .
 INCLUDEPATH += .
+#####################################
+#Ajouts faits paur laurent Morissette
+#####################################
 QT += webkit
+QT += widgets
+QT += printsupport
+QT += core gui
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets multimedia  webkitwidgets
+#############
+#FIN
+#############
+
 
 # Mac icon/plist
 ICON = images/icon.icns
